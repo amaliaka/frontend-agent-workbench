@@ -1,0 +1,23 @@
+{
+  "skill_name": "frontend-project-orchestrator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Create a new Nuxt app from scratch for an internal analytics dashboard using @nuxt/ui. I want the right workflow, not just a random scaffold.",
+      "expected_output": "Routes through product or stack clarification as needed, uses frontend-project-orchestrator as the entry point, selects brainstorming when the product direction is underspecified, then hands off to frontend-scaffolder, nuxt-ui, and verification-oriented skills only as needed.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Scaffold me a React app with Tailwind, TypeScript, and shadcn/ui. I mainly need the project setup done cleanly.",
+      "expected_output": "Recognizes this as a pure scaffolding request, skips unnecessary brainstorming and writing-plans, routes to frontend-scaffolder, then shadcn, and finishes with appropriate verification.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I already have a frontend repo. Add a new onboarding flow for first-time users.",
+      "expected_output": "Avoids using frontend-project-orchestrator as the main workflow because this is not a fresh project request, and instead routes toward brainstorming and onboard-oriented implementation flow.",
+      "files": []
+    }
+  ]
+}
