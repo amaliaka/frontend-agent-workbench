@@ -29,6 +29,8 @@ Start by deciding what kind of request you are handling.
 - New app or boilerplate request: start with `frontend-project-orchestrator`.
 - Review, polish, or accessibility pass: go straight to quality and refinement.
 
+For new app requests, default to scaffolding-first unless feature/product design is explicitly the primary goal.
+
 Primary skills:
 
 - `using-superpowers`
@@ -42,6 +44,8 @@ Primary skills:
 Use this phase when the request changes behavior, structure, UI, or scope.
 
 For net-new frontend projects, prefer `frontend-project-orchestrator` first. It decides whether this phase should begin with `brainstorming`, `frontend-scaffolder`, or both.
+
+For setup-only scaffolding requests, skip design discovery and route directly to `frontend-scaffolder`.
 
 Recommended flow:
 
@@ -60,6 +64,8 @@ Use this phase to answer:
 ## Phase 3: Planning
 
 Once the direction is approved, create the implementation path.
+
+Use `writing-plans` once per approved scope. Re-run only if requirements or scope materially change.
 
 Recommended flow:
 
@@ -191,8 +197,9 @@ Use these to confirm:
 1. `using-superpowers`
 2. `frontend-project-orchestrator`
 3. follow the chosen route:
+   - `frontend-scaffolder` for setup-only scaffolding (including inside non-empty repos, target `apps/<project-name>` by default)
    - `brainstorming` if the product or UI direction is still fuzzy
-   - `frontend-scaffolder` if a new codebase must be created
+   - combine both only when setup plus product design is requested
 4. framework-specific skill: `nuxt-ui` or `shadcn` if relevant
 5. `writing-plans` for the first substantial feature set
 6. `verification-before-completion`

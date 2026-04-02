@@ -53,9 +53,11 @@ When the current workspace is not empty (for example: an agent harness repo), do
 
 Mandatory behavior:
 1. **Never manually recreate framework boilerplate** as a fallback.
-2. If the user did not require root-level files, scaffold into a subdirectory (preferred): `apps/<project-name>` or `<project-name>/`.
-3. If the user explicitly requires root-level files in a non-empty repo, scaffold into a temporary directory first, then copy results into the target with an explicit overwrite strategy.
-4. If a CLI refuses to scaffold in the target directory, scaffold in a fresh directory and import. Do not switch to manual file creation.
+2. Define `TARGET_DIR` before scaffolding. In non-empty repos, default to `apps/<project-name>`.
+3. If `TARGET_DIR` already exists, do not overwrite silently. Pick `apps/<project-name>-<timestamp>` or ask one short confirmation.
+4. If the user explicitly requires root-level files in a non-empty repo, scaffold into a temporary directory first, then copy results into the target with an explicit overwrite strategy.
+5. Before copying into root, run a collision preview and ask for confirmation if any tracked files would change.
+6. If a CLI refuses to scaffold in the target directory, scaffold in a fresh directory and import. Do not switch to manual file creation.
 
 If overwrite/collision risk exists, ask one short confirmation question before copying files.
 
@@ -82,9 +84,9 @@ See `references/addons.md` for detailed setup instructions per add-on.
 After scaffolding, do a quick sanity check:
 
 ```bash
-cd <project-name>
-npm install  # if not already done
-npm run build  # verify it compiles clean
+cd <target-dir>
+<package-manager> install  # if not already done
+<package-manager> run build  # verify it compiles clean
 ```
 
 Then tell the user:
@@ -101,7 +103,8 @@ Then tell the user:
 
 - **Node.js is required** — if `node` or `npm` isn't available in the environment, tell the user and stop
 - **Working directory** — scaffold into `/home/claude/` or wherever the user specifies; ask if unclear
-- **Package manager preference** — default to `pnpm`; switch to `npm` or `yarn` only if the user explicitly requests it. Always check `pnpm` is available first (`pnpm --version`), and install it via `npm install -g pnpm` if missing.
+- **Package manager preference** — default to `pnpm`; switch to `npm` or `yarn` only if the user explicitly requests it.
+- **pnpm fallback order** — check `pnpm --version`; if missing, try `corepack enable pnpm`; if still unavailable, use `npm` commands (or the user-selected package manager). Do not block scaffolding on global `pnpm` install.
 - **Non-empty repos** — default to a subdirectory scaffold target (`apps/<project-name>` preferred) so starter CLIs can run cleanly.
 - **No manual starter recreation** — if the starter command fails due to directory state, retry with a new directory strategy, not hand-written boilerplate.
 - **Tailwind v4** — always use Tailwind v4 (`@tailwindcss/vite` for Vite-based projects, `@tailwindcss/postcss` for Next.js). No `tailwind.config.js`, no content globs, no `autoprefixer` — just `@import "tailwindcss"` in CSS. See `references/addons.md` for per-framework setup.

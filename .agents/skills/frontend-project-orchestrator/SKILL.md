@@ -47,19 +47,29 @@ That sequence is sometimes right, but often wasteful.
 Before choosing the path, answer these questions:
 
 1. Is this a new codebase or an existing project?
-2. Is the request stack-first, product-first, or both?
-3. Is the framework already chosen?
-4. Is the UI/component system already chosen?
-5. Is the user asking only for setup, or for meaningful feature work too?
-6. Is visual/product direction already clear, or does it need design discovery?
+2. Does the request imply a new starter codebase (even if the user did not say "scaffold")?
+3. Is the request stack-first, product-first, or both?
+4. Is the framework already chosen?
+5. Is the UI/component system already chosen?
+6. Is the user asking only for setup, or for meaningful feature work too?
+7. Is visual/product direction already clear, or does it need design discovery?
 
-If the answer to any of these is unclear and the ambiguity affects architecture or user experience, use `brainstorming` first.
+If ambiguity affects architecture or user experience, use `brainstorming` first.
+If ambiguity is only setup-level (for example TypeScript vs JavaScript, Tailwind yes/no), ask one quick clarifying question and continue with `frontend-scaffolder` rather than switching to a full brainstorming flow.
 
 ## Decision Flow
 
+### Priority Override: Scaffolding Intent
+
+For new-project requests, treat scaffolding as the default first action.
+
+The user does not need to explicitly ask for "scaffold/setup/init" wording. If intent implies creating a new app/starter, route to `frontend-scaffolder` first.
+
+In existing repositories, prefer scaffolding into `apps/<project-name>` (or another named subdirectory) rather than repo root.
+
 ### Case 1: Existing Repo, Not A Fresh Project
 
-Do not keep using this skill.
+Do not keep using this skill unless the request includes new-app scaffolding intent (explicit or implied, see override above).
 
 Route instead to:
 
@@ -69,9 +79,11 @@ Route instead to:
 
 Exception:
 
-- If the user explicitly asks to scaffold a brand-new starter app inside this existing repo, route to `frontend-scaffolder` and target a subdirectory (`apps/<project-name>` preferred) instead of trying to scaffold into repo root.
+- If the user asks for a brand-new starter app inside this existing repo (even without using the word "scaffold"), route to `frontend-scaffolder` and target a subdirectory (`apps/<project-name>` preferred) instead of trying to scaffold into repo root.
 
 ### Case 2: Pure Scaffolding Request
+
+This is the default route for most new-project prompts.
 
 Examples:
 

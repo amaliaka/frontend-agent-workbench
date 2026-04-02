@@ -9,21 +9,53 @@ This file contains the exact non-interactive commands to scaffold each supported
 
 If the current repo already has files (for example `.agents/`, docs, configs), do not scaffold into `.`.
 
-Preferred pattern:
+Define:
+- `TARGET_DIR=apps/<project-name>` (preferred in non-empty repos)
+- If `TARGET_DIR` exists, use `apps/<project-name>-<timestamp>` or ask for confirmation
+
+Preferred pattern (pseudocode):
 
 ```bash
 mkdir -p apps
-pnpm create <framework-cli> apps/<project-name> ...
+pnpm create <framework-cli> "$TARGET_DIR" ...
 ```
 
 If root-level placement is explicitly required, scaffold into a temporary folder first, then copy:
 
 ```bash
 pnpm create <framework-cli> .scaffold-tmp/<project-name> ...
+# preview collisions first
+rsync -ain .scaffold-tmp/<project-name>/ ./ --exclude .git --exclude node_modules
+# if conflicts exist, ask for confirmation before applying
 rsync -a .scaffold-tmp/<project-name>/ ./ --exclude .git --exclude node_modules
 ```
 
+If `rsync` is unavailable, use a portable fallback:
+
+```bash
+cp -R .scaffold-tmp/<project-name>/. .
+```
+
+After successful import and verification:
+
+```bash
+rm -rf .scaffold-tmp/<project-name>
+```
+
 Never replace starter generation with manual boilerplate creation.
+
+Concrete non-empty examples:
+
+```bash
+# Next.js
+pnpm create next-app@latest apps/my-app --typescript --eslint --tailwind --app --src-dir --import-alias "@/*" --no-turbopack
+
+# Nuxt
+pnpm dlx nuxi@latest init apps/my-app
+
+# Vite React
+pnpm create vite@latest apps/my-app --template react-ts
+```
 
 ---
 
