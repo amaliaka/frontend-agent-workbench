@@ -67,6 +67,10 @@ Route instead to:
 - `systematic-debugging` for bugs, regressions, or failures
 - `frontend-design` for direct UI implementation work
 
+Exception:
+
+- If the user explicitly asks to scaffold a brand-new starter app inside this existing repo, route to `frontend-scaffolder` and target a subdirectory (`apps/<project-name>` preferred) instead of trying to scaffold into repo root.
+
 ### Case 2: Pure Scaffolding Request
 
 Examples:

@@ -47,6 +47,18 @@ Key principles:
 - Always install **non-interactively** — use environment variables or flags to suppress interactive prompts (e.g., `create-next-app` flags, `FORCE_COLOR=0`, etc.)
 - Capture and show relevant output so the user can see what was scaffolded
 
+### Non-Empty Directory Rule (Critical)
+
+When the current workspace is not empty (for example: an agent harness repo), do **not** hand-build starter files.
+
+Mandatory behavior:
+1. **Never manually recreate framework boilerplate** as a fallback.
+2. If the user did not require root-level files, scaffold into a subdirectory (preferred): `apps/<project-name>` or `<project-name>/`.
+3. If the user explicitly requires root-level files in a non-empty repo, scaffold into a temporary directory first, then copy results into the target with an explicit overwrite strategy.
+4. If a CLI refuses to scaffold in the target directory, scaffold in a fresh directory and import. Do not switch to manual file creation.
+
+If overwrite/collision risk exists, ask one short confirmation question before copying files.
+
 ---
 
 ## Step 3: Layer on Add-ons
@@ -90,6 +102,8 @@ Then tell the user:
 - **Node.js is required** — if `node` or `npm` isn't available in the environment, tell the user and stop
 - **Working directory** — scaffold into `/home/claude/` or wherever the user specifies; ask if unclear
 - **Package manager preference** — default to `pnpm`; switch to `npm` or `yarn` only if the user explicitly requests it. Always check `pnpm` is available first (`pnpm --version`), and install it via `npm install -g pnpm` if missing.
+- **Non-empty repos** — default to a subdirectory scaffold target (`apps/<project-name>` preferred) so starter CLIs can run cleanly.
+- **No manual starter recreation** — if the starter command fails due to directory state, retry with a new directory strategy, not hand-written boilerplate.
 - **Tailwind v4** — always use Tailwind v4 (`@tailwindcss/vite` for Vite-based projects, `@tailwindcss/postcss` for Next.js). No `tailwind.config.js`, no content globs, no `autoprefixer` — just `@import "tailwindcss"` in CSS. See `references/addons.md` for per-framework setup.
 - **Don't overconfigure** — only install what the user asked for; don't add things "just because"
 - **Monorepos** — if the user wants a monorepo (Turborepo, Nx), see `references/monorepo.md`

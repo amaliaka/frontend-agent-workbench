@@ -5,6 +5,28 @@ This file contains the exact non-interactive commands to scaffold each supported
 
 ---
 
+## Non-Empty Workspace Strategy (Use This First)
+
+If the current repo already has files (for example `.agents/`, docs, configs), do not scaffold into `.`.
+
+Preferred pattern:
+
+```bash
+mkdir -p apps
+pnpm create <framework-cli> apps/<project-name> ...
+```
+
+If root-level placement is explicitly required, scaffold into a temporary folder first, then copy:
+
+```bash
+pnpm create <framework-cli> .scaffold-tmp/<project-name> ...
+rsync -a .scaffold-tmp/<project-name>/ ./ --exclude .git --exclude node_modules
+```
+
+Never replace starter generation with manual boilerplate creation.
+
+---
+
 ## Next.js
 
 ```bash
