@@ -78,6 +78,7 @@ cypress/downloads/
 # Local tooling
 .superpowers/
 .worktrees/
+/apps/
 
 # Editor / OS noise
 .DS_Store
